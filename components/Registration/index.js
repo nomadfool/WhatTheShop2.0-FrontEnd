@@ -7,14 +7,15 @@ import { Form, Item, Input, Button, Text } from 'native-base';
 // Store
 import authStore from '../../stores/authStore';
 
-class Login extends Component {
+class Registration extends Component {
 	state = {
 		username : '',
+		email    : '',
 		password : ''
 	};
 
 	handlesubmit = () => {
-		authStore.loginUser(this.state);
+		authStore.registerUser(this.state);
 	};
 
 	render() {
@@ -28,6 +29,14 @@ class Login extends Component {
 						onChangeText={(username) => this.setState({ username })}
 					/>
 				</Item>
+				<Item>
+					<Input
+						placeholder="email"
+						autoCapitalize="none"
+						autoCorrect={false}
+						onChangeText={(email) => this.setState({ email })}
+					/>
+				</Item>
 				<Item last>
 					<Input
 						placeholder="Password"
@@ -38,13 +47,10 @@ class Login extends Component {
 					/>
 				</Item>
 				<Button full onPress={() => this.handlesubmit()}>
-					<Text>Login</Text>
-				</Button>
-				<Button full onPress={() => this.props.navigation.navigate('Register')}>
 					<Text>Register</Text>
 				</Button>
 			</Form>
 		);
 	}
 }
-export default observer(Login);
+export default observer(Registration);
