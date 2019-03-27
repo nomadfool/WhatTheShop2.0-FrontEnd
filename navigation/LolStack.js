@@ -1,10 +1,12 @@
 import { createStackNavigator } from "react-navigation";
 
-import LolScreen from "../components/Lol";
+import HomeScreen from "../components/Lol";
+import DetailItem from "../components/Lol/DetailItem";
 
-const LolStack = createStackNavigator(
+const HomeStack = createStackNavigator(
   {
-    Lol: LolScreen
+    Home: HomeScreen,
+    Detail: DetailItem
   },
   {
     defaultNavigationOptions: {
@@ -13,4 +15,4 @@ const LolStack = createStackNavigator(
   }
 );
 
-export default LolStack;
+export default HomeStack;
