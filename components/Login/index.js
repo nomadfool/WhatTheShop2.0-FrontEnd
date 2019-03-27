@@ -46,5 +46,6 @@ class Login extends Component {
 			</Form>
 		);
 	}
+
 }
 export default observer(Login);
