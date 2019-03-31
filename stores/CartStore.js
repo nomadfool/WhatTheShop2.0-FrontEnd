@@ -1,24 +1,40 @@
 import { decorate, computed, observable } from "mobx";
+import axios from "axios";
+const instance = axios.create({
+  baseURL: "http://127.0.0.1:8000/"
+});
 
 class CartStore {
   items = [];
 
-  addItemsToCart = item => {
+  addItemsToCart = async (item, quantity) => {
     // console.log("this is item in Store: ", item);
     const foundItem = this.items.find(cartItem => {
-      return cartItem.id == item.id;
+      return cartItem.id === item.id;
     });
 
     if (foundItem) {
-      item.cartQuantity += 1;
-      console.log("item.cartQuantity", item.cartQuantity);
+      // console.log("item.cartQuantity", item.cartQuantity);
     } else {
-      item.cartQuantity = 1;
       this.items.push(item);
+      await instance.post("/api/cart/", {
+        item: item.id,
+        quantity: quantity
+      });
     }
   };
-}
 
+  //   addItemToBE = async item => {
+  //     try {
+  //       console.log("addItemToBE-items", item);
+  //       await instance.post("/api/cart/", item.id, item.cartQuantity);
+  //       //   const data = res.data;
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  // }
+}
 decorate(CartStore, {
   items: observable
 });

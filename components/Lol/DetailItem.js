@@ -13,17 +13,28 @@ import {
   Icon,
   Left,
   Body,
-  Right
+  Right,
+  Label
 } from "native-base";
 
 import cartStore from "../../stores/CartStore";
+import Store from "../../stores/authStore";
 
 class DetailItem extends Component {
-  handleAddingToCart = () => {
-    const item = this.props.navigation.getParam("item");
-
-    cartStore.addItemsToCart(item);
+  state = {
+    quantity: 1
   };
+  handleAddingToCart = () => {
+    const quantity = this.state.quantity;
+    if (Store.user) {
+      const item = this.props.navigation.getParam("item");
+      cartStore.addItemsToCart(item, quantity);
+    } else {
+      alert("you have to login first to add things to cart");
+      this.props.navigation.navigate("ProfileTab");
+    }
+  };
+
   render() {
     item = this.props.navigation.getParam("item");
     return (
@@ -56,15 +67,36 @@ class DetailItem extends Component {
         </CardItem>
 
         <CardItem>
-          <Left>
+          <Button
+            onPress={() => this.setState({ quantity: this.state.quantity + 1 })}
+          >
+            <Text>+</Text>
+          </Button>
+          <Label>{this.state.quantity}</Label>
+          <Button
+            onPress={() => this.setState({ quantity: this.state.quantity - 1 })}
+          >
+            <Text>-</Text>
+          </Button>
+          {/* <Form>
             <Button transparent onPress={this.handleAddingToCart}>
               <Icon active type="MaterialIcons" name="add-shopping-cart" />
             </Button>
-            <Button transparent>
-              <Icon active name="chatbubbles" />
-              <Text>4 Comments</Text>
+            <Item>
+              <Input placeholder="20" />
+            </Item>
+            <Button transparent onPress={this.handleAddingToCart}>
+              <Icon active type="MaterialIcons" name="add-shopping-cart" />
             </Button>
-          </Left>
+          </Form> */}
+          <Button transparent onPress={this.handleAddingToCart}>
+            <Icon active type="MaterialIcons" name="add-shopping-cart" />
+          </Button>
+          <Button transparent>
+            <Icon active name="chatbubbles" />
+            <Text>4 Comments</Text>
+          </Button>
+
           <Body />
         </CardItem>
       </Card>
