@@ -8,6 +8,7 @@ const instance = axios.create({
 });
 
 class Store {
+
   user = null;
 
   setAuthToken = async token => {
@@ -69,11 +70,14 @@ class Store {
       console.log("something went wrong registering", error.Date);
     }
   };
+
 }
 
 decorate(Store, {
   user: observable
 });
+
 const authStore = new Store();
 authStore.checkForToken();
+
 export default authStore;

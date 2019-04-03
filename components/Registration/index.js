@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 
 // NativeBase Components
-import { Form, Item, Input, Button, Text } from "native-base";
+
+import { Form, Item, Input, Button, Text, Container, Content } from 'native-base';
+
 
 // Store
 import authStore from "../../stores/authStore";
@@ -17,13 +19,20 @@ class Registration extends Component {
   };
 
   handlesubmit = () => {
-    const navigation = this.props.navigation;
-    authStore.registerUser(this.state, navigation);
+    authStore.registerUser(this.state, this.props.navigation);
   };
 
   render() {
     return (
-      <Form>
+			<Container>
+				<Content
+					contentContainerStyle={{
+						flex           : 1,
+						alignItems     : 'center',
+						justifyContent : 'center'
+					}}
+				>
+					<Form style={{ width: '80%' }}>
         <Item>
           <Input
             placeholder="Username"
@@ -70,7 +79,10 @@ class Registration extends Component {
           <Text>Register</Text>
         </Button>
       </Form>
+				</Content>
+			</Container>
     );
   }
+
 }
 export default observer(Registration);
