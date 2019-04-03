@@ -1,82 +1,80 @@
-import { decorate, observable, action, computed } from 'mobx';
-import axios from 'axios';
-import { AsyncStorage } from 'react-native';
-import jwt_decode from 'jwt-decode';
+import { decorate, observable, action, computed } from "mobx";
+import axios from "axios";
+import { AsyncStorage } from "react-native";
+import jwt_decode from "jwt-decode";
 
 const instance = axios.create({
-	baseURL : 'http://127.0.0.1:8000/'
+  baseURL: "http://127.0.0.1:8000/"
 });
 
 class Store {
-	user = null;
 
-	setAuthToken = async (token) => {
-		if (token) {
-			// Apply to every request
-			axios.defaults.headers.common.Authorization = `JWT ${token}`;
-			const decodedUser = jwt_decode(token);
-			this.user = decodedUser;
-			await AsyncStorage.setItem('jwtToken', token);
-		} else {
-			delete axios.defaults.headers.common.Authorization;
-			await AsyncStorage.removeItem('jwtToken');
-			this.user = null;
-		}
-	};
+  user = null;
 
-	logoutUser = () => {
-		this.setAuthToken();
-	};
+  setAuthToken = async token => {
+    if (token) {
+      // Apply to every request
+      axios.defaults.headers.common.Authorization = `JWT ${token}`;
+      const decodedUser = jwt_decode(token);
+      this.user = decodedUser;
+      await AsyncStorage.setItem("myToken", token);
+    } else {
+      delete axios.defaults.headers.common.Authorization;
+      await AsyncStorage.removeItem("myToken");
+      this.user = null;
+    }
+  };
 
-	loginUser = async (userData, navigation) => {
-		try {
-			let res = await instance.post('/api/login/', userData);
-			let user = res.data;
-			const { token } = user;
+  checkForToken = async () => {
+    const token = await AsyncStorage.getItem("myToken");
 
-			// Save token to localStorage
+    if (token) {
+      const currentDate = Date.now() / 1000;
+      const user = jwt_decode(token);
+      if (user.exp >= currentDate) {
+        this.setAuthToken(token);
+      } else {
+        this.setUser();
+      }
+    }
+  };
 
-			await this.setAuthToken(token);
-			navigation.navigate('HomeTab');
-		} catch (err) {
-			console.log('something went wrong logging in', err);
-		}
-		console.log('login successful');
-	};
+  logoutUser = navigation => {
+    this.setAuthToken();
+    navigation.replace("Login");
+    console.log("bye bye ");
+  };
 
-	checkForToken = async () => {
-		let token = await AsyncStorage.getItem('jwtToken');
+  loginUser = async (userData, navigation) => {
+    try {
+      const res = await instance.post("/api/login/", userData);
+      const user = res.data;
+      this.setAuthToken(user.token);
+      console.log("You are Logged in");
+      navigation.replace("Profile");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-		if (token) {
-			const currentTime = Date.now() / 1000;
+  registerUser = async (userData, navigation) => {
+    try {
+      console.log(userData);
+      await instance.post("/api/register/", userData);
 
-			// Decode token and get user info
-			const decodedUser = jwt_decode(token);
+      this.loginUser(userData, navigation);
+      //   this.setAuthToken(data.token);
+      //   console.log("You Are Signed in");
+      //   navigation.replace("Profile");
+    } catch (error) {
+      console.log("something went wrong registering", error.Date);
+    }
+  };
 
-			// Check token expiration
-			if (decodedUser.exp >= currentTime) {
-				// Set auth token header
-				this.setAuthToken(token);
-			} else {
-				this.logoutUser();
-				// Redirect to login
-			}
-		}
-	};
-
-	registerUser = async (userData, navigation) => {
-		try {
-			console.log('userData', userData);
-			await instance.post('/api/register/', userData);
-			this.loginUser(userData, navigation);
-		} catch (err) {
-			console.log('something went wrong registering', err.Date);
-		}
-	};
 }
 
 decorate(Store, {
-	user : observable
+  user: observable
 });
 
 const authStore = new Store();
