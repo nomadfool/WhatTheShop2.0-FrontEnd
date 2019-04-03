@@ -1,107 +1,79 @@
-import { decorate, observable, action, computed } from 'mobx';
-import axios from 'axios';
-import { AsyncStorage } from 'react-native';
-import jwt_decode from 'jwt-decode';
+import { decorate, observable, action, computed } from "mobx";
+import axios from "axios";
+import { AsyncStorage } from "react-native";
+import jwt_decode from "jwt-decode";
 
 const instance = axios.create({
-	baseURL : 'http://127.0.0.1:8000/'
+  baseURL: "http://127.0.0.1:8000/"
 });
 
 class Store {
-	constructor() {
-		this.user = null;
-	}
+  user = null;
 
-	setAuthToken(token) {
-		if (token) {
-			// Apply to every request
-			axios.defaults.headers.common['Authorization'] = `JWT ${token}`;
-		} else {
-			delete axios.defaults.headers.common['Authorization'];
-		}
-	}
+  setAuthToken = async token => {
+    if (token) {
+      // Apply to every request
+      axios.defaults.headers.common.Authorization = `JWT ${token}`;
+      const decodedUser = jwt_decode(token);
+      this.user = decodedUser;
+      await AsyncStorage.setItem("myToken", token);
+    } else {
+      delete axios.defaults.headers.common.Authorization;
+      await AsyncStorage.removeItem("myToken");
+      this.user = null;
+    }
+  };
 
-	setCurrentUser(token) {
-		if (token) {
-			// Decode token to get user data
-			const decodedUser = jwt_decode(token);
-			this.user = decodedUser;
-		} else {
-			this.user = null;
-		}
-	}
+  checkForToken = async () => {
+    const token = await AsyncStorage.getItem("myToken");
 
-	logoutUser() {
-		AsyncStorage.removeItem('jwtToken').then(
-			() => {
-				this.setCurrentUser();
-				this.setAuthToken();
-			},
-			() => {
-				console.log('something went wrong with logging out');
-			}
-		);
-	}
+    if (token) {
+      const currentDate = Date.now() / 1000;
+      const user = jwt_decode(token);
+      if (user.exp >= currentDate) {
+        this.setAuthToken(token);
+      } else {
+        this.setUser();
+      }
+    }
+  };
 
-	loginUser(userData) {
-		instance
-			.post('/api/login/', userData)
-			.then((res) => res.data)
-			.then((user) => {
-				const { token } = user;
-				// Save token to localStorage
-				AsyncStorage.setItem('jwtToken', token).then(
-					() => {
-						// Set token to Auth header
-						this.setAuthToken(token);
+  logoutUser = navigation => {
+    this.setAuthToken();
+    navigation.replace("Login");
+    console.log("bye bye ");
+  };
 
-						// Set current user
-						this.setCurrentUser(token);
-					},
-					() => console.log('something went wrong with setting jwt token')
-				);
-			})
-			.catch((err) => console.log('something went wrong logging in'));
-		console.log('login successful');
-	}
+  loginUser = async (userData, navigation) => {
+    try {
+      const res = await instance.post("/api/login/", userData);
+      const user = res.data;
+      this.setAuthToken(user.token);
+      console.log("You are Logged in");
+      navigation.replace("Profile");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-	checkForToken = () => {
-		AsyncStorage.getItem('jwtToken')
-			.then((token) => {
-				if (token) {
-					const currentTime = Date.now() / 1000;
+  registerUser = async (userData, navigation) => {
+    try {
+      console.log(userData);
+      await instance.post("/api/register/", userData);
 
-					// Decode token and get user info
-					const decodedUser = jwt_decode(token);
-
-					// Check token expiration
-					if (decodedUser.exp >= currentTime) {
-						// Set auth token header
-						this.setAuthToken(token);
-						// Set user and isAuthenticated
-						this.setCurrentUser(decodedUser);
-					} else {
-						this.logoutUser();
-						// Redirect to login
-					}
-				}
-			})
-			.catch((err) => console.error(err));
-	};
-
-	registerUser = async (userData) => {
-		try {
-			console.log('userData', userData);
-			await instance.post('/api/register/', userData);
-			this.loginUser(userData);
-		} catch (err) {
-			console.log('something went wrong registering', err.Date);
-		}
-	};
+      this.loginUser(userData, navigation);
+      //   this.setAuthToken(data.token);
+      //   console.log("You Are Signed in");
+      //   navigation.replace("Profile");
+    } catch (error) {
+      console.log("something went wrong registering", error.Date);
+    }
+  };
 }
 
 decorate(Store, {
-	user : observable
+  user: observable
 });
-
-export default new Store();
+const authStore = new Store();
+authStore.checkForToken();
+export default authStore;

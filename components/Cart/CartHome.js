@@ -18,12 +18,12 @@ import {
   Fab
 } from "native-base";
 import CartItem from "./CartItem";
-import Store from "../../stores/authStore";
+import authStore from "../../stores/authStore";
 
 class CartHome extends Component {
   handleAddingToCart = () => {
-    console.log(Store.user);
-    if (Store.user) {
+    console.log(authStore.user);
+    if (authStore.user) {
       if (cartStore.items) {
         alert("thank you for shopping");
       }
