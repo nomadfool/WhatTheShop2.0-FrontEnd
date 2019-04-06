@@ -1,22 +1,20 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 
 // NativeBase Components
 
-
-import Registration from "../Registration/index";
+import Registration from '../Registration/index';
 
 import { Form, Item, Input, Button, Text, Container, Content } from 'native-base';
 
-
 // Store
-import authStore from "../../stores/authStore";
+import authStore from '../../stores/authStore';
 
 class Login extends Component {
-  state = {
-    username: "",
-    password: ""
-  };
+	state = {
+		username : '',
+		password : ''
+	};
 
 	handlesubmit = () => {
 		authStore.loginUser(this.state, this.props.navigation);
@@ -50,7 +48,7 @@ class Login extends Component {
 								onChangeText={(password) => this.setState({ password })}
 							/>
 						</Item>
-						<Button full style={{ marginBottom: 10 }} onPress={() => this.handlesubmit()}>
+						<Button full style={{ marginBottom: 10, marginTop: 5 }} onPress={() => this.handlesubmit()}>
 							<Text>Login</Text>
 						</Button>
 						<Button full onPress={() => this.props.navigation.navigate('Register')}>
