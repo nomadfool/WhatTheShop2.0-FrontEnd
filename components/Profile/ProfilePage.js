@@ -4,7 +4,7 @@ import profileStore from '../../stores/profileStore';
 
 import { Container, Left, Content, Thumbnail, ListItem, Text, Button, View, Right } from 'native-base';
 import { observer } from 'mobx-react';
-import { Image } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 class ProfilePage extends Component {
 	componentDidMount() {
@@ -24,43 +24,44 @@ class ProfilePage extends Component {
 			);
 		} else {
 			return (
-				<Container
-					contentContainerStyle={{
-						flex : 1
-					}}
-				>
+				<Container style={styles.container}>
 					<Content>
 						<Thumbnail
 							style={{ width: 150, height: 150, borderRadius: 150 / 2, alignSelf: 'center' }}
-							source={{
-								uri :
-									'https://img1.looper.com/img/gallery/disney-may-take-over-development-of-avatar-x-men-franchises/intro-1533929612.jpg'
-							}}
+							source={
+								authStore.user.profile_image ? (
+									{
+										uri : user.profile_image
+									}
+								) : (
+									require('../../assets/profile.png')
+								)
+							}
 						/>
 
 						<Text style={{ marginTop: 8, alignSelf: 'center' }}>{user.username}</Text>
 
 						<ListItem>
-							<Text>
+							<Text style={styles.text}>
 								Name: {user.first_name} {user.last_name}
 							</Text>
 						</ListItem>
 						<ListItem>
-							<Text>Email: {user.email}</Text>
+							<Text style={styles.text}>Email: {user.email}</Text>
 						</ListItem>
 						{!user.profile.phone ? (
 							<ListItem Button onPress={() => navigation.navigate('EditProfile', { user: user })}>
-								<Text>Add Phone Number</Text>
+								<Text style={styles.text}>Add Phone Number</Text>
 							</ListItem>
 						) : (
 							<ListItem>
-								<Text>Phone: {user.profile.phone}</Text>
+								<Text style={styles.text}>Phone: {user.profile.phone}</Text>
 							</ListItem>
 						)}
 
 						{!user.address ? (
 							<ListItem Button onPress={() => navigation.navigate('Address', { user: user })}>
-								<Text>Create Address</Text>
+								<Text style={styles.text}>Create Address</Text>
 							</ListItem>
 						) : (
 							<ListItem
@@ -70,7 +71,7 @@ class ProfilePage extends Component {
 								onPress={() => navigation.navigate('ViewAddress', { user: user })}
 							>
 								<Left>
-									<Text>Address</Text>
+									<Text style={styles.text}>Address</Text>
 								</Left>
 
 								<Right>
@@ -78,13 +79,17 @@ class ProfilePage extends Component {
 										transparent
 										onPress={() => navigation.navigate('EditAddress', { user: user })}
 									>
-										<Text>Edit</Text>
+										<Text style={styles.text}>Edit</Text>
 									</Button>
 								</Right>
 							</ListItem>
 						)}
 
-						<Button danger style={{ marginTop: 8 }} onPress={() => authStore.logoutUser(navigation)}>
+						<Button
+							danger
+							style={{ marginTop: 8, alignItems: 'center', justifyContent: 'center' }}
+							onPress={() => authStore.logoutUser(navigation)}
+						>
 							<Text>Logout</Text>
 						</Button>
 					</Content>
@@ -93,5 +98,14 @@ class ProfilePage extends Component {
 		}
 	}
 }
+
+const styles = StyleSheet.create({
+	container : {
+		flexGrow        : 1,
+		width           : '100%',
+		backgroundColor : '#422D56'
+	},
+	text      : { color: 'white' }
+});
 
 export default observer(ProfilePage);

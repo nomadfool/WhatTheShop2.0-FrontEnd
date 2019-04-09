@@ -6,13 +6,12 @@ import HomeStack from './HomeStack';
 // import ProfileStack from './ProfileStack';
 import CartStack from './CartStack';
 import Catagories from '../components/Home/Catagories';
-import Search from '../components/Search';
 
 const BottomTab = createBottomTabNavigator(
 	{
 		Home       : HomeStack,
 		Catagories : Catagories,
-		Search     : Search,
+
 		Cart       : CartStack
 	},
 	{
@@ -26,9 +25,6 @@ const BottomTab = createBottomTabNavigator(
 				} else if (routeName === 'Catagories') {
 					iconName = 'tag-multiple';
 					iconType = 'MaterialCommunityIcons';
-				} else if (routeName === 'Search') {
-					iconName = 'search';
-					iconType = 'MaterialIcons';
 				} else if (routeName === 'Cart') {
 					iconName = 'shopping-cart';
 					iconType = 'FontAwesome';
@@ -38,10 +34,10 @@ const BottomTab = createBottomTabNavigator(
 		}),
 		tabBarOptions            : {
 			showLabel         : false,
-			activeTintColor   : '#6200EE',
-			inactiveTintColor : '#858585',
+			activeTintColor   : '#FF7E5F',
+			inactiveTintColor : '#b4b8ab',
 			style             : {
-				backgroundColor : 'white'
+				backgroundColor : '#351C4D'
 			},
 			labelStyle        : {
 				fontSize : 12

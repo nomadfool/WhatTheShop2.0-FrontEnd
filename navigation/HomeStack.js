@@ -13,8 +13,18 @@ const HomeStack = createStackNavigator(
 	{
 		initialRouteName         : 'Home',
 		defaultNavigationOptions : ({ navigation }) => ({
-			title      : 'WhatTheShop',
-			headerLeft : <Icon name="menu" type="MaterialCommunityIcons" onPress={() => navigation.openDrawer()} />
+			title            : 'The Emporium',
+			headerTintColor  : '#FF7E5F',
+			headerTitleStyle : { fontWeight: 'bold' },
+			headerStyle      : { backgroundColor: '#351C4D' },
+			headerLeft       : (
+				<Icon
+					name="menu"
+					style={{ color: '#FF7E5F' }}
+					type="MaterialCommunityIcons"
+					onPress={() => navigation.openDrawer()}
+				/>
+			)
 		})
 	}
 );

@@ -10,8 +10,18 @@ const CartStack = createStackNavigator(
 	},
 	{
 		defaultNavigationOptions : ({ navigation }) => ({
-			title      : 'Cart',
-			headerLeft : <Icon name="menu" type="MaterialCommunityIcons" onPress={() => navigation.openDrawer()} />
+			title            : 'Cart',
+			headerTintColor  : '#FF7E5F',
+			headerTitleStyle : { fontWeight: 'bold' },
+			headerStyle      : { backgroundColor: '#351C4D' },
+			headerLeft       : (
+				<Icon
+					name="menu"
+					style={{ color: '#FF7E5F' }}
+					type="MaterialCommunityIcons"
+					onPress={() => navigation.openDrawer()}
+				/>
+			)
 		})
 	}
 );
