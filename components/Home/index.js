@@ -1,16 +1,17 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 // import { Icon } from "native-base";
-import ItemList from "./itemList";
+import ItemList from './itemList';
+import { Icon } from 'native-base';
 
 class HomeScreen extends Component {
-  render() {
-    return <ItemList navigation={this.props.navigation} />;
-  }
+	render() {
+		return <ItemList navigation={this.props.navigation} />;
+	}
 }
 
 export default HomeScreen;
 {
-  /* <Icon
+	/* <Icon
         type="FontAwesome"
         name="home"
         style={{

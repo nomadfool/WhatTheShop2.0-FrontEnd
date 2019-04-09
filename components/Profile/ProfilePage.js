@@ -3,6 +3,7 @@ import authStore from "../../stores/authStore";
 import profileStore from "../../stores/profileStore";
 import UserOrderHistory from "./UserOrderHistory";
 
+
 import {
   Container,
   Left,
@@ -15,7 +16,7 @@ import {
   Right
 } from "native-base";
 import { observer } from "mobx-react";
-import { Image } from "react-native";
+import { StyleSheet } from "react-native";
 
 class ProfilePage extends Component {
   componentDidMount() {
@@ -27,32 +28,29 @@ class ProfilePage extends Component {
 
     const navigation = this.props.navigation;
 
-    if (!user) {
-      return (
-        <View>
-          <Text>loading</Text>
-        </View>
-      );
-    } else {
-      return (
-        <Container
-          contentContainerStyle={{
-            flex: 1
-          }}
-        >
-          <Content>
-            <Thumbnail
-              style={{
-                width: 150,
-                height: 150,
-                borderRadius: 150 / 2,
-                alignSelf: "center"
-              }}
-              source={{
-                uri:
-                  "https://img1.looper.com/img/gallery/disney-may-take-over-development-of-avatar-x-men-franchises/intro-1533929612.jpg"
-              }}
-            />
+
+		if (!user) {
+			return (
+				<View>
+					<Text>loading</Text>
+				</View>
+			);
+		} else {
+			return (
+				<Container style={styles.container}>
+					<Content>
+						<Thumbnail
+							style={{ width: 150, height: 150, borderRadius: 150 / 2, alignSelf: 'center' }}
+							source={
+								authStore.user.profile_image ? (
+									{
+										uri : user.profile_image
+									}
+								) : (
+									require('../../assets/profile.png')
+								)
+							}
+						/>
 
             <Text style={{ marginTop: 8, alignSelf: "center" }}>
               {user.username}
@@ -136,6 +134,16 @@ class ProfilePage extends Component {
       );
     }
   }
+
 }
+
+const styles = StyleSheet.create({
+	container : {
+		flexGrow        : 1,
+		width           : '100%',
+		backgroundColor : '#422D56'
+	},
+	text      : { color: 'white' }
+});
 
 export default observer(ProfilePage);

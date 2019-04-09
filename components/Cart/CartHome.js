@@ -1,8 +1,9 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Image } from "react-native";
-import { observer } from "mobx-react";
-import cartStore from "../../stores/CartStore";
+import React, { Component } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
+import { observer } from 'mobx-react';
+import cartStore from '../../stores/CartStore';
 import {
+
   Container,
   Header,
   Content,
@@ -52,7 +53,7 @@ class CartHome extends Component {
           Button
           direction="right"
           position="bottomRight"
-          style={{ backgroundColor: "#02c39a" }}
+          style={{ backgroundColor: "#351C4D" }}
           onPress={this.handleCheckout}
         >
           <Icon name="check-circle" type="FontAwesome" />
@@ -62,6 +63,19 @@ class CartHome extends Component {
       </Container>
     );
   }
+
 }
+const styles = StyleSheet.create({
+	container     : {
+		backgroundColor : '#422D56'
+	},
+	card          : {
+		borderRadius    : 4,
+		borderWidth     : 0.5,
+		borderColor     : '#116466',
+		backgroundColor : '#000000'
+	},
+	textHigligted : { color: 'white' }
+});
 
 export default observer(CartHome);
