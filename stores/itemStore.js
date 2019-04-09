@@ -10,17 +10,17 @@ class ItemStore {
 	loading = true;
 	query = '';
 
-	fetchAllPost = async () => {
-		try {
-			const res = await instance.get('api/list/');
-			const items = res.data;
-			this.items = items;
-			this.loading = false;
-			//   console.log(this.posts[0].id);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  fetchAllPost = async () => {
+    try {
+      const res = await instance.get("api/list/");
+      const items = res.data;
+      this.items = items;
+      this.loading = false;
+      //   console.log(this.posts[0].id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 	get filteredItems() {
 		return this.items.filter(
@@ -29,6 +29,12 @@ class ItemStore {
 				item.description.toLowerCase().includes(this.query.toLowerCase())
 		);
 	}
+  getItem = itemId => {
+    // console.log("testttt", itemId);
+    // console.log("yyyyyyyyy", this.items);
+    return this.items.find(itemIn => +itemIn.id === +itemId);
+  };
+
 }
 
 decorate(ItemStore, {

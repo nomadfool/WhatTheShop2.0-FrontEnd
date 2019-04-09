@@ -10,6 +10,8 @@ import EditProfile from '../components/Profile/editProfile';
 import Address from '../Address/Address';
 import EditAddress from '../Address/EditAddress';
 import ViewAddress from '../Address/ViewAddress';
+import UserOrderHistory from "../components/Profile/UserOrderHistory";
+import OrderItems from "../components/Profile/OrderItems";
 
 const ProfileStack = createStackNavigator(
 	{
@@ -19,7 +21,9 @@ const ProfileStack = createStackNavigator(
 		EditProfile : EditProfile,
 		Address     : Address,
 		EditAddress : EditAddress,
-		ViewAddress : ViewAddress
+		ViewAddress : ViewAddress,
+    orderHistory: UserOrderHistory,
+    OrderItems: OrderItems
 	},
 	{
 		initialRouteName         : 'Login',
@@ -38,6 +42,7 @@ const ProfileStack = createStackNavigator(
 			)
 		})
 	}
+
 );
 
 export default ProfileStack;

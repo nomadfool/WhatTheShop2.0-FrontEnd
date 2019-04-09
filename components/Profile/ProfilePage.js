@@ -1,20 +1,33 @@
-import React, { Component } from 'react';
-import authStore from '../../stores/authStore';
-import profileStore from '../../stores/profileStore';
+import React, { Component } from "react";
+import authStore from "../../stores/authStore";
+import profileStore from "../../stores/profileStore";
+import UserOrderHistory from "./UserOrderHistory";
 
-import { Container, Left, Content, Thumbnail, ListItem, Text, Button, View, Right } from 'native-base';
-import { observer } from 'mobx-react';
-import { StyleSheet } from 'react-native';
+
+import {
+  Container,
+  Left,
+  Content,
+  Thumbnail,
+  ListItem,
+  Text,
+  Button,
+  View,
+  Right
+} from "native-base";
+import { observer } from "mobx-react";
+import { StyleSheet } from "react-native";
 
 class ProfilePage extends Component {
-	componentDidMount() {
-		const user = authStore.user;
-		profileStore.retraiveUserProfile(user);
-	}
-	render() {
-		const user = profileStore.user;
+  componentDidMount() {
+    const user = authStore.user;
+    profileStore.retraiveUserProfile(user);
+  }
+  render() {
+    const user = profileStore.user;
 
-		const navigation = this.props.navigation;
+    const navigation = this.props.navigation;
+
 
 		if (!user) {
 			return (
@@ -39,64 +52,89 @@ class ProfilePage extends Component {
 							}
 						/>
 
-						<Text style={{ marginTop: 8, alignSelf: 'center' }}>{user.username}</Text>
+            <Text style={{ marginTop: 8, alignSelf: "center" }}>
+              {user.username}
+            </Text>
 
-						<ListItem>
-							<Text style={styles.text}>
-								Name: {user.first_name} {user.last_name}
-							</Text>
-						</ListItem>
-						<ListItem>
-							<Text style={styles.text}>Email: {user.email}</Text>
-						</ListItem>
-						{!user.profile.phone ? (
-							<ListItem Button onPress={() => navigation.navigate('EditProfile', { user: user })}>
-								<Text style={styles.text}>Add Phone Number</Text>
-							</ListItem>
-						) : (
-							<ListItem>
-								<Text style={styles.text}>Phone: {user.profile.phone}</Text>
-							</ListItem>
-						)}
+            <ListItem>
+              <Text>
+                Name: {user.first_name} {user.last_name}
+              </Text>
+            </ListItem>
+            <ListItem>
+              <Text>Email: {user.email}</Text>
+            </ListItem>
+            {!user.profile.phone ? (
+              <ListItem
+                Button
+                onPress={() =>
+                  navigation.navigate("EditProfile", { user: user })
+                }
+              >
+                <Text>Add Phone Number</Text>
+              </ListItem>
+            ) : (
+              <ListItem>
+                <Text>Phone: {user.profile.phone}</Text>
+              </ListItem>
+            )}
 
-						{!user.address ? (
-							<ListItem Button onPress={() => navigation.navigate('Address', { user: user })}>
-								<Text style={styles.text}>Create Address</Text>
-							</ListItem>
-						) : (
-							<ListItem
-								last
-								Button
-								style={{ marginTop: 5 }}
-								onPress={() => navigation.navigate('ViewAddress', { user: user })}
-							>
-								<Left>
-									<Text style={styles.text}>Address</Text>
-								</Left>
+            {!user.address ? (
+              <ListItem
+                Button
+                onPress={() => navigation.navigate("Address", { user: user })}
+              >
+                <Text>Create Address</Text>
+              </ListItem>
+            ) : (
+              <ListItem
+                last
+                Button
+                style={{ marginTop: 5 }}
+                onPress={() =>
+                  navigation.navigate("ViewAddress", { user: user })
+                }
+              >
+                <Left>
+                  <Text>Address</Text>
+                </Left>
 
-								<Right>
-									<Button
-										transparent
-										onPress={() => navigation.navigate('EditAddress', { user: user })}
-									>
-										<Text style={styles.text}>Edit</Text>
-									</Button>
-								</Right>
-							</ListItem>
-						)}
+                <Right>
+                  <Button
+                    transparent
+                    onPress={() =>
+                      navigation.navigate("EditAddress", { user: user })
+                    }
+                  >
+                    <Text>Edit</Text>
+                  </Button>
+                </Right>
+              </ListItem>
+            )}
+            <ListItem
+              last
+              Button
+              style={{ marginTop: 5 }}
+              onPress={() =>
+                navigation.navigate("orderHistory", { user: user })
+              }
+            >
+              <Text>History Order</Text>
+            </ListItem>
 
-						<Button
-							danger
-							style={{ marginTop: 8, alignItems: 'center', justifyContent: 'center' }}
-							onPress={() => authStore.logoutUser(navigation)}
-						>
-							<Text>Logout</Text>
-						</Button>
-					</Content>
-				</Container>
-			);
-		}
-	}
+            <Button
+              danger
+              style={{ marginTop: 8 }}
+              onPress={() => authStore.logoutUser(navigation)}
+            >
+              <Text>Logout</Text>
+            </Button>
+          </Content>
+        </Container>
+      );
+    }
+  }
+
 }
 
 const styles = StyleSheet.create({
