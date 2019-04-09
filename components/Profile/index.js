@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 // NativeBase Components
 import { Card, CardItem, Text, Button } from "native-base";
-import authStore from "../../stores/authStore";
+
 import ProfilePage from "./ProfilePage";
 
 class Profile extends Component {

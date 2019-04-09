@@ -20,6 +20,11 @@ class ItemStore {
       console.log(error);
     }
   };
+  getItem = itemId => {
+    // console.log("testttt", itemId);
+    // console.log("yyyyyyyyy", this.items);
+    return this.items.find(itemIn => +itemIn.id === +itemId);
+  };
 }
 
 decorate(ItemStore, {
