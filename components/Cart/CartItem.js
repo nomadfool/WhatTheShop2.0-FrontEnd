@@ -17,9 +17,14 @@ import {
 
 import { withNavigation } from "react-navigation";
 
+import { observer } from "mobx-react";
+import cartStore from "../../stores/CartStore";
+
 class CartItem extends Component {
   render() {
     const item = this.props.item;
+    let total;
+
     return (
       <Card>
         <TouchableHighlight
@@ -37,8 +42,9 @@ class CartItem extends Component {
               />
               <Body>
                 <Text>{item.name}</Text>
-                <Text note>${item.price}</Text>
-                <Text note>Quantity: {item.cartQuantity}</Text>
+                <Text note>${Number(item.price) * Number(item.quantity)}</Text>
+                <Text note>Quantity: {item.quantity}</Text>
+                {/* <Text note>cart: {cart}</Text> */}
               </Body>
             </Left>
           </CardItem>
@@ -48,4 +54,4 @@ class CartItem extends Component {
   }
 }
 
-export default withNavigation(CartItem);
+export default withNavigation(observer(CartItem));

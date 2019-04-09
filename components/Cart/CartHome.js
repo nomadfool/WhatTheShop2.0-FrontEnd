@@ -15,16 +15,21 @@ import {
   Left,
   Body,
   Right,
-  Fab
+  Fab,
+  Label
 } from "native-base";
 import CartItem from "./CartItem";
 import authStore from "../../stores/authStore";
-
+let total = 0;
 class CartHome extends Component {
-  handleAddingToCart = () => {
+  handleCheckout = () => {
     console.log(authStore.user);
     if (authStore.user) {
       if (cartStore.items) {
+        const cart = cartStore.cart;
+        const status = true;
+        cartStore.checkout(cart, status);
+        cartStore.items = [];
         alert("thank you for shopping");
       }
     } else {
@@ -34,6 +39,7 @@ class CartHome extends Component {
 
   render() {
     let cartItems;
+
     if (cartStore.items) {
       cartItems = cartStore.items.map(item => {
         return <CartItem key={item.id} item={item} />;
@@ -47,19 +53,12 @@ class CartHome extends Component {
           direction="right"
           position="bottomRight"
           style={{ backgroundColor: "#02c39a" }}
-          onPress={this.handleAddingToCart}
+          onPress={this.handleCheckout}
         >
           <Icon name="check-circle" type="FontAwesome" />
-          <Button style={{ backgroundColor: "#o2c39a" }}>
-            <Icon name="logo-whatsapp" />
-          </Button>
-          <Button style={{ backgroundColor: "#3B5998" }}>
-            <Icon name="logo-facebook" />
-          </Button>
-          <Button disabled style={{ backgroundColor: "#DD5144" }}>
-            <Icon name="mail" />
-          </Button>
+          <Button style={{ backgroundColor: "#o2c39a" }} />
         </Fab>
+        <Label>$ {cartStore.total}</Label>
       </Container>
     );
   }
