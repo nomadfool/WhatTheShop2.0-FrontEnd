@@ -9,10 +9,9 @@ import Catagories from '../components/Home/Catagories';
 
 const BottomTab = createBottomTabNavigator(
 	{
-		Home       : HomeStack,
-		Catagories : Catagories,
+		Home : HomeStack,
 
-		Cart       : CartStack
+		Cart : CartStack
 	},
 	{
 		defaultNavigationOptions : ({ navigation }) => ({

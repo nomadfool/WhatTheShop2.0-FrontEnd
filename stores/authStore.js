@@ -41,6 +41,7 @@ class Store {
 	logoutUser = (navigation) => {
 		this.setAuthToken();
 		navigation.replace('Login');
+
 		console.log('bye bye ');
 	};
 
