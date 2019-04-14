@@ -27,14 +27,16 @@ class Registration extends Component {
 			<Container>
 				<Content
 					contentContainerStyle={{
-						flex           : 1,
-						alignItems     : 'center',
-						justifyContent : 'center'
+						flex            : 1,
+						alignItems      : 'center',
+						justifyContent  : 'center',
+						backgroundColor : '#422D56'
 					}}
 				>
 					<Form style={{ width: '80%' }}>
 						<Item>
 							<Input
+								style={{ color: 'white' }}
 								placeholder="Username"
 								autoCapitalize="none"
 								autoCorrect={false}
@@ -43,6 +45,7 @@ class Registration extends Component {
 						</Item>
 						<Item>
 							<Input
+								style={{ color: 'white' }}
 								placeholder="email"
 								autoCapitalize="none"
 								autoCorrect={false}
@@ -51,6 +54,7 @@ class Registration extends Component {
 						</Item>
 						<Item>
 							<Input
+								style={{ color: 'white' }}
 								placeholder="Password"
 								autoCapitalize="none"
 								autoCorrect={false}
@@ -60,6 +64,7 @@ class Registration extends Component {
 						</Item>
 						<Item>
 							<Input
+								style={{ color: 'white' }}
 								placeholder="First Name"
 								autoCapitalize="none"
 								autoCorrect={false}
@@ -68,6 +73,7 @@ class Registration extends Component {
 						</Item>
 						<Item last>
 							<Input
+								style={{ color: 'white' }}
 								placeholder="Last Name"
 								autoCapitalize="none"
 								autoCorrect={false}
@@ -75,8 +81,8 @@ class Registration extends Component {
 							/>
 						</Item>
 
-						<Button full onPress={() => this.handlesubmit()}>
-							<Text>Register</Text>
+						<Button full transparent onPress={() => this.handlesubmit()}>
+							<Text style={{ color: '#FF7E5F' }}>Register</Text>
 						</Button>
 					</Form>
 				</Content>

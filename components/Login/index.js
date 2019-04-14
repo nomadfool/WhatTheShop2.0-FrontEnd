@@ -29,14 +29,16 @@ class Login extends Component {
 			<Container>
 				<Content
 					contentContainerStyle={{
-						flex           : 1,
-						alignItems     : 'center',
-						justifyContent : 'center'
+						flex            : 1,
+						alignItems      : 'center',
+						justifyContent  : 'center',
+						backgroundColor : '#422D56'
 					}}
 				>
 					<Form style={{ width: '80%' }}>
 						<Item>
 							<Input
+								style={{ color: 'white' }}
 								placeholder="Username"
 								autoCapitalize="none"
 								autoCorrect={false}
@@ -45,6 +47,7 @@ class Login extends Component {
 						</Item>
 						<Item last>
 							<Input
+								style={{ color: 'white' }}
 								placeholder="Password"
 								autoCapitalize="none"
 								autoCorrect={false}
@@ -52,11 +55,16 @@ class Login extends Component {
 								onChangeText={(password) => this.setState({ password })}
 							/>
 						</Item>
-						<Button full style={{ marginBottom: 10, marginTop: 5 }} onPress={() => this.handlesubmit()}>
-							<Text>Login</Text>
+						<Button
+							full
+							transparent
+							style={{ marginBottom: 10, marginTop: 5 }}
+							onPress={() => this.handlesubmit()}
+						>
+							<Text style={{ color: '#FF7E5F' }}>Login</Text>
 						</Button>
-						<Button full onPress={() => this.props.navigation.navigate('Register')}>
-							<Text>Register</Text>
+						<Button full transparent onPress={() => this.props.navigation.navigate('Register')}>
+							<Text style={{ color: '#FF7E5F' }}>Register</Text>
 						</Button>
 					</Form>
 				</Content>
